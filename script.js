@@ -32,6 +32,12 @@ input.setAttribute('aria-label','Search');
 input.addEventListener("keyup",data);
 let br =document.createElement('br')
 
+let button = document.createElement('button');
+button.classList=("btn btn-primary");
+button.setAttribute("type","button");
+button.innerHTML="Search"
+button.style.marginLeft="10px"
+button.addEventListener("click",search)
 
 ///////////////////Creating container for aligning the Api data based Cards////////////////////////
 
@@ -48,7 +54,7 @@ row.style.listStyleType= "none";
 container.append(row);
 
 div2.append(form)
-idiv.append(input)
+idiv.append(input,button)
 form.append(idiv)
 
 div.append(h1)
@@ -86,7 +92,13 @@ async function sendCard(res,len){
 
     //  console.log(character.splice(1,10))
     let result =await findCharName(character.splice(1,10));
-        let obj ={"name":res[i].name,"characters":result,"date":date,"NoofPages":res[i].numberOfPages,"isbn":res[i].isbn,"authors":res[i].authors,"publisher":res[i].publisher}
+        let obj ={"name":res[i].name,
+        "characters":result,
+        "date":date,
+        "NoofPages":res[i].numberOfPages,
+        "isbn":res[i].isbn,
+        "authors":res[i].authors,
+        "publisher":res[i].publisher}
 
     let li = document.createElement('li');
     li.className="col-md-4";
@@ -140,12 +152,29 @@ function data(){
         txtValue = a.textContent || a.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
             li[i].style.display = "";
+
         } else {
             li[i].style.display = "none";
         }
     }
 }
 
+
+/////////////////function to highlight the values from the input//////////////////////////////
+
+function search() {
+    if (window.find && window.getSelection) {
+        document.designMode = "on";
+        var sel = window.getSelection();
+        sel.collapse(document.body, 0);
+        let text = document.getElementById('book').value
+        while (window.find(text)) {
+            document.execCommand("HiliteColor", false, "yellow");
+            sel.collapseToEnd();
+        }
+        document.designMode = "off";
+    }
+}
 
 
 //////////////////function to find the character names from the loop api////////////////////
